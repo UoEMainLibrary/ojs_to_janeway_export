@@ -1,0 +1,60 @@
+services:
+  list_issues:
+    image: python:3.12-slim
+    working_dir: /app
+    volumes:
+      - .:/app:ro
+    command: >
+      python list_issues.py
+      --base-url ${OJS_BASE_URL}
+      --journal-path ${OJS_JOURNAL_PATH}
+      --api-key ${OJS_API_KEY}
+  export_issue:
+    image: python:3.12-slim
+    working_dir: /app
+    volumes:
+      - .:/app:ro
+      - ./output:/output
+    command: >
+      python export_issue.py
+      --base-url ${OJS_BASE_URL}
+      --journal-path ${OJS_JOURNAL_PATH}
+      --api-key ${OJS_API_KEY}
+      --issue-id ${OJS_ISSUE_ID}
+      --journal-code ${JANEWAY_JOURNAL_CODE}
+      --context-id ${OJS_CONTEXT_ID}
+      --output /output/janeway_issue.csv
+      --images-output /output/janeway_images.csv
+  export_editorial:
+    image: python:3.12-slim
+    working_dir: /app
+    volumes:
+      - .:/app:ro
+      - ./output:/output
+    command: >
+      python export_editorial.py
+      --base-url ${OJS_BASE_URL}
+      --journal-path ${OJS_JOURNAL_PATH}
+      --api-key ${OJS_API_KEY}
+  export_editors:
+    image: python:3.12-slim
+    working_dir: /app
+    volumes:
+      - .:/app:ro
+      - ./output:/output
+    command: >
+      python export_editors.py
+      --base-url ${OJS_BASE_URL}
+      --journal-path ${OJS_JOURNAL_PATH}
+      --api-key ${OJS_API_KEY}
+  export_reviewers:
+    image: python:3.12-slim
+    working_dir: /app
+    volumes:
+      - .:/app:ro
+      - ./output:/output
+    command: >
+      python export_reviewers.py
+      --base-url ${OJS_BASE_URL}
+      --journal-path ${OJS_JOURNAL_PATH}
+      --api-key ${OJS_API_KEY}
