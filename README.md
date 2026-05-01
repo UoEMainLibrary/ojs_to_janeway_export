@@ -1,6 +1,6 @@
 #  Open Journal Systems to Janeway export scripts
 
-This repository contains various Python scripts for exporting data from OJS's REST API for import into Janeway. These scripts were designed against Edinburgh Diamond's OJS instances.
+This repository contains various Python scripts for exporting data from OJS 3.4's REST API for import into Janeway. These scripts were designed against Edinburgh Diamond's OJS instances.
 
 Edinburgh Diamond, situated within Edinburgh University Library, offers free publishing services to support Diamond Open Access books and journals created by University of Edinburgh academics and students. https://library.ed.ac.uk/research-support/edinburgh-diamond
 
