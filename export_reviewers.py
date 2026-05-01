@@ -27,7 +27,7 @@ def main():
     users = fetch_reviewer_users(journal_url, args.api_key)
     count = write_reviewers_csv(users, args.output, args.locale)
     print(f"Reviewers CSV written to {args.output} ({count} user(s)).")
-    print("Upload via Janeway → Imports Plugin → Reviewer Import.")
+    print("Upload via Janeway > Manager > Plugins > Import Plugin > Reviewers Import")
 
 if __name__ == "__main__":
     main()

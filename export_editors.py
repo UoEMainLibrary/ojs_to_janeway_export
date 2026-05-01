@@ -27,7 +27,7 @@ def main():
     users = fetch_editorial_users(journal_url, args.api_key)
     count = write_editors_csv(users, args.output, args.locale)
     print(f"Editors CSV written to {args.output} ({count} user(s)).")
-    print("Upload via Janeway → Imports Plugin → Editors Import.")
+    print("Upload via Janeway > Manager > Plugins > Import Plugin > Editors Import")
 
 if __name__ == "__main__":
     main()

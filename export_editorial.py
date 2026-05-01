@@ -30,7 +30,7 @@ def main():
     rows = editorial_users_to_rows(users, args.locale)
     write_editorial_csv(rows, args.output)
     print(f"Editorial team CSV written to {args.output} ({len(rows)} row(s)).")
-    print("Upload via Janeway → Imports Plugin → Editorial Team Import.")
+    print("Upload via Janeway > Manager > Plugins > Import Plugin > Editorial Team Import")
 
 if __name__ == "__main__":
     main()

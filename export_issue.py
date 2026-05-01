@@ -64,14 +64,14 @@ def main():
 
     print(f"\nWriting {len(all_rows)} row(s) to {args.output}...")
     write_article_csv(all_rows, args.output)
-    print(f"Done. Upload {args.output} via Janeway → All Articles → Upload Update.")
+    print(f"Done. Upload {args.output} via Janeway > Manager > Plugins > Import Plugin > Article Import, Export, Update")
 
     if args.images_output:
         image_rows_with_images = [r for r in image_rows if r["URL"]]
         if image_rows_with_images:
             write_images_csv(image_rows_with_images, args.images_output)
             print(f"Images CSV written to {args.images_output} ({len(image_rows_with_images)} article(s)).")
-            print("Upload via Janeway → Imports Plugin → Article Images.")
+            print("Upload via Janeway > Manager > Plugins > Import Plugin > Article Images")
         else:
             print("No cover images found — images CSV not written.")
 
