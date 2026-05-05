@@ -16,7 +16,7 @@ from datetime import datetime
 from ojs_api import get_locale_value
 
 ############################################################
-# data normalisation
+# data normalisation                                       #
 ############################################################
 
 LOCALE_TO_ISO3 = {
@@ -133,7 +133,7 @@ def split_full_name(full_name: str) -> tuple:
     return salutation, parts[0], " ".join(parts[1:-1]), parts[-1]
 
 ############################################################
-# article import CSV
+# article import CSV                                       #
 ############################################################
 
 JANEWAY_COLUMNS = [
@@ -265,7 +265,7 @@ def write_article_csv(rows: list, path: str) -> None:
         writer.writerows(rows)
 
 ############################################################
-# article images CSV
+# article images CSV                                       #
 ############################################################
 
 IMAGES_COLUMNS = ["Identifier Type", "Identifier", "URL"]
@@ -277,7 +277,7 @@ def write_images_csv(rows: list, path: str) -> None:
         writer.writerows(rows)
 
 ############################################################
-# editorial team CSV
+# editorial team CSV                                       #
 ############################################################
 
 EDITORIAL_TEAM_COLUMNS = [
@@ -310,7 +310,7 @@ def write_editorial_csv(rows: list, path: str) -> None:
         writer.writerows(rows)
 
 ############################################################
-# editors CSV
+# editors CSV                                              #
 ############################################################
 
 EDITORS_COLUMNS = [
@@ -343,7 +343,7 @@ def write_editors_csv(users_and_groups: list, path: str, locale: str) -> int:
     return len(rows)
 
 ############################################################
-# reviewers CSV
+# reviewers CSV                                            #
 ############################################################
 
 REVIEWERS_COLUMNS = [

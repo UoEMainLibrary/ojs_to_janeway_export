@@ -20,7 +20,7 @@ list_issues.py reads the OJS REST API and returns a list of issues for a particu
 
 ### usage
 
-`python3 list_issues.py --base-url https://your-ojs.org/journal --api-key YOUR_API_KEY`
+`python3 list_issues.py --base-url https://your-ojs.org --journal-path JOURNAL_PATH --api-key YOUR_API_KEY`
 
 or
 
@@ -32,7 +32,7 @@ export_issue.py exports a single journal issue from OJS in the format required f
 
 ### usage
 
-`python3 export_issue.py --base-url https://your-ojs.org/journal --api-key YOUR_API_KEY --issue-id ISSUE_ID --journal-code YOUR_JANEWAY_JOURNAL_CODE --output FILENAME.csv`
+`python3 export_issue.py --base-url https://your-ojs.org --journal-path JOURNAL_PATH --api-key YOUR_API_KEY --issue-id ISSUE_ID --journal-code YOUR_JANEWAY_JOURNAL_CODE --output FILENAME.csv`
 
 or
 
@@ -44,7 +44,7 @@ export_editors.py exports a list of editor users from OJS in the format required
 
 ### usage
 
-`python3 export_editors.py --base-url https://your-ojs.org/journal --api-key YOUR_API_KEY --output FILENAME.csv`
+`python3 export_editors.py --base-url https://your-ojs.org --journal-path JOURNAL_PATH --api-key YOUR_API_KEY --output FILENAME.csv`
 
 or
 
@@ -56,7 +56,7 @@ export_editorial.py exports a list of editor users from OJS in the format requir
 
 ### usage
 
-`python3 export_editorial.py --base-url https://your-ojs.org/journal --api-key YOUR_API_KEY --output FILENAME.csv`
+`python3 export_editorial.py --base-url https://your-ojs.org --journal-path JOURNAL_PATH --api-key YOUR_API_KEY --output FILENAME.csv`
 
 or
 
@@ -68,7 +68,7 @@ export_reviewers.py exports a list of reviewer users from OJS in the format requ
 
 ### usage
 
-`python3 export_reviewers.py --base-url https://your-ojs.org/journal --api-key YOUR_API_KEY --output FILENAME.csv`
+`python3 export_reviewers.py --base-url https://your-ojs.org --journal-path JOURNAL_PATH --api-key YOUR_API_KEY --output FILENAME.csv`
 
 or
 

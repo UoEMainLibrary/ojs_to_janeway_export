@@ -14,7 +14,7 @@ import urllib.parse
 import urllib.request
 
 ############################################################
-# HTTP helpers
+# HTTP helpers                                             #
 ############################################################
 
 def api_get(journal_url: str, path: str, api_key: str, params: dict = None) -> dict:
@@ -74,7 +74,7 @@ def paginate(journal_url: str, path: str, api_key: str, params: dict = None) -> 
     return results
 
 ############################################################
-# locale helper
+# locale helper                                            #
 ############################################################
 
 def get_locale_value(field, locale: str = "en") -> str:
@@ -93,7 +93,7 @@ def get_locale_value(field, locale: str = "en") -> str:
     return ""
 
 ############################################################
-# issue fetching
+# issue fetching                                           #
 ############################################################
 
 def fetch_issue(journal_url: str, api_key: str, issue_id: int) -> dict:
@@ -125,7 +125,7 @@ def build_section_cache(journal_url: str, api_key: str, issue_id: int, locale: s
     return cache
 
 ############################################################
-# publication fetching
+# publication fetching                                     #
 ############################################################
 
 def get_current_publication(submission: dict, api_key: str) -> dict:
@@ -187,7 +187,7 @@ def detect_context_id(journal_url: str, api_key: str, issues: list) -> str | Non
     return None
 
 ############################################################
-# user fetching
+# user fetching                                            #
 ############################################################
 
 # OJS role IDs considered editorial (excludes Reviewer=4096, Author=65536,
