@@ -58,3 +58,18 @@ services:
       --base-url ${OJS_BASE_URL}
       --journal-path ${OJS_JOURNAL_PATH}
       --api-key ${OJS_API_KEY}
+  export_all_issues:
+    image: python:3.12-slim
+    working_dir: /app
+    volumes:
+      - .:/app:ro
+      - ./output:/output
+    command: >
+      python export_all_issues.py
+      --base-url ${OJS_BASE_URL}
+      --journal-path ${OJS_JOURNAL_PATH}
+      --api-key ${OJS_API_KEY}
+      --journal-code ${JANEWAY_JOURNAL_CODE}
+      --context-id ${OJS_CONTEXT_ID}
+      --output /output/janeway_all_articles.csv
+      --images-output /output/janeway_all_images.csv
