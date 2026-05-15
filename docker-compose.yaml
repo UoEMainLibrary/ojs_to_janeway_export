@@ -71,5 +71,6 @@ services:
       --api-key ${OJS_API_KEY}
       --journal-code ${JANEWAY_JOURNAL_CODE}
       --context-id ${OJS_CONTEXT_ID}
-      --output /output/janeway_all_articles.csv
-      --images-output /output/janeway_all_images.csv
+      --batch 20
+      --images
+      --output-dir /output
