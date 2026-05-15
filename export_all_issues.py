@@ -13,7 +13,7 @@ import argparse
 import os
 from ojs_api import (
     fetch_all_issues, fetch_submissions_for_issue, build_section_cache,
-    get_current_publication, get_pdf_url, get_cover_image_url,
+    get_current_publication, get_pdf_url, get_html_url, get_cover_image_url,
     get_locale_value,
 )
 from janeway_csv import submission_to_rows, write_article_csv, write_images_csv
@@ -45,6 +45,8 @@ def main():
     total_batches = (total_issues + args.batch - 1) // args.batch
     print(f"  Found {total_issues} issue(s) — splitting into {total_batches} batch(es) of up to {args.batch}")
 
+    html_warnings = []
+
     for batch_num in range(1, total_batches + 1):
         batch_issues = issues_sorted[(batch_num - 1) * args.batch: batch_num * args.batch]
         print(f"\n--- Batch {batch_num}/{total_batches} ---")
@@ -67,17 +69,21 @@ def main():
                 )[:60] or f"submission {sub['id']}"
                 print(f"    [{i}/{len(submissions)}] {title_preview}...")
 
-                rows, doi, cover_image_url = submission_to_rows(
+                rows, doi, cover_image_url, html_only, html_url = submission_to_rows(
                     journal_url, args.base_url, args.api_key,
                     sub, issue, args.journal_code, args.locale, args.context_id,
                     section_cache,
                     get_current_publication,
                     get_pdf_url,
+                    get_html_url,
                     get_cover_image_url,
                 )
                 all_rows.extend(rows)
                 if cover_image_url and doi:
                     image_rows.append({"Identifier Type": "doi", "Identifier": doi, "URL": cover_image_url})
+                if html_only:
+                    html_warnings.append({"title": title_preview, "html_url": html_url,
+                                          "issue": f"Vol. {issue.get('volume')} No. {issue.get('number')}"})
 
         articles_path = os.path.join(args.output_dir, f"janeway_articles_batch{batch_num:02d}.csv")
         write_article_csv(all_rows, articles_path)
@@ -91,7 +97,13 @@ def main():
                 print(f"  Written: {images_path} ({len(image_rows_with_images)} article(s))")
 
     print(f"\nAll done. {total_batches} batch file(s) written to {args.output_dir}/")
-    print("Upload each via Janeway → All Articles → Upload Update.")
+    print("Upload each via Janeway > Manager > Plugins > Import Plugin > Article Import, Export, Update")
+
+    if html_warnings:
+        print(f"\nWarning: {len(html_warnings)} article(s) have HTML galleys only (no PDF) — manual galley upload required:")
+        for w in html_warnings:
+            print(f"  [{w['issue']}] {w['title']}")
+            print(f"    HTML: {w['html_url']}")
 
 if __name__ == "__main__":
     main()

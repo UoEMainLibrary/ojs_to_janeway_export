@@ -176,6 +176,7 @@ def submission_to_rows(journal_url: str, site_base_url: str, api_key: str,
                        section_cache: dict,
                        get_current_publication_fn,
                        get_pdf_url_fn,
+                       get_html_url_fn,
                        get_cover_image_url_fn) -> tuple:
     """Convert a single OJS submission into Janeway CSV rows.
 
@@ -185,8 +186,8 @@ def submission_to_rows(journal_url: str, site_base_url: str, api_key: str,
     pub = get_current_publication_fn(submission, api_key)
     if not pub:
         print(f"  Warning: no publication found for submission {submission['id']}", file=sys.stderr)
-        return [], "", ""
-
+        return [], "", "", False, ""
+        
     title = get_locale_value(pub.get("fullTitle") or pub.get("title"), locale)
     abstract = strip_html(get_locale_value(pub.get("abstract"), locale))
 
@@ -213,6 +214,8 @@ def submission_to_rows(journal_url: str, site_base_url: str, api_key: str,
             custom_pages = pages
 
     pdf_uri = get_pdf_url_fn(journal_url, pub)
+    html_url = get_html_url_fn(journal_url, pub)
+    html_only = bool(html_url and not pdf_uri)
     cover_image_url = get_cover_image_url_fn(site_base_url, pub, context_id)
 
     base = empty_article_row(journal_code, issue, locale) | {
@@ -256,7 +259,7 @@ def submission_to_rows(journal_url: str, site_base_url: str, api_key: str,
 
         rows.append(row)
 
-    return rows, doi, cover_image_url
+    return rows, doi, cover_image_url, html_only, html_url
 
 def write_article_csv(rows: list, path: str) -> None:
     with open(path, "w", newline="", encoding="utf-8-sig") as f:

@@ -12,7 +12,7 @@
 import argparse
 from ojs_api import (
     fetch_issue, fetch_submissions_for_issue, build_section_cache,
-    get_current_publication, get_pdf_url, get_cover_image_url,
+    get_current_publication, get_pdf_url, get_html_url, get_cover_image_url,
     get_locale_value,
 )
 from janeway_csv import submission_to_rows, write_article_csv, write_images_csv
@@ -43,6 +43,7 @@ def main():
 
     all_rows = []
     image_rows = []
+    html_warnings = []
     for i, sub in enumerate(submissions, 1):
         pub_stub = (sub.get("publications") or [{}])[-1]
         title_preview = get_locale_value(
@@ -50,21 +51,31 @@ def main():
         )[:60] or f"submission {sub['id']}"
         print(f"  [{i}/{len(submissions)}] {title_preview}...")
 
-        rows, doi, cover_image_url = submission_to_rows(
+        rows, doi, cover_image_url, html_only, html_url = submission_to_rows(
             journal_url, args.base_url, args.api_key,
             sub, issue, args.journal_code, args.locale, args.context_id,
             section_cache,
             get_current_publication,
             get_pdf_url,
+            get_html_url,
             get_cover_image_url,
         )
         all_rows.extend(rows)
         if cover_image_url and doi:
             image_rows.append({"Identifier Type": "doi", "Identifier": doi, "URL": cover_image_url})
+        if html_only:
+            html_warnings.append({"title": title_preview, "html_url": html_url,
+                                   "issue": f"Vol. {issue.get('volume')} No. {issue.get('number')}"})
 
     print(f"\nWriting {len(all_rows)} row(s) to {args.output}...")
     write_article_csv(all_rows, args.output)
     print(f"Done. Upload {args.output} via Janeway > Manager > Plugins > Import Plugin > Article Import, Export, Update")
+    
+    if html_warnings:
+        print(f"\nWarning: {len(html_warnings)} article(s) have HTML galleys only (no PDF) — manual galley upload required:")
+        for w in html_warnings:
+            print(f"  [{w['issue']}] {w['title']}")
+            print(f"    HTML: {w['html_url']}")
 
     if args.images_output:
         image_rows_with_images = [r for r in image_rows if r["URL"]]

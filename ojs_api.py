@@ -151,7 +151,26 @@ def get_pdf_url(journal_url: str, pub: dict) -> str:
     """
     submission_id = pub.get("submissionId")
     for galley in (pub.get("galleys") or []):
-        if "PDF" in (galley.get("label") or "").upper():
+        if not galley.get("file"):
+            continue
+        label = (galley.get("label") or "").upper()
+        mimetype = (galley.get("file") or {}).get("mimetype", "")
+        is_pdf = "PDF" in label or mimetype == "application/pdf"
+        is_html = "HTML" in label or mimetype in ("text/html", "application/xhtml+xml")
+        if is_pdf and not is_html:
+            galley_id = galley.get("id")
+            if submission_id and galley_id:
+                return f"{journal_url.rstrip('/')}/article/download/{submission_id}/{galley_id}"
+    return ""
+
+def get_html_url(journal_url: str, pub: dict) -> str:
+    """Return the public URL for the first HTML galley, or empty string if none."""
+    submission_id = pub.get("submissionId")
+    for galley in (pub.get("galleys") or []):
+        label = (galley.get("label") or "").upper()
+        mimetype = (galley.get("file") or {}).get("mimetype", "")
+        is_html = "HTML" in label or mimetype in ("text/html", "application/xhtml+xml")
+        if is_html:
             galley_id = galley.get("id")
             if submission_id and galley_id:
                 return f"{journal_url.rstrip('/')}/article/download/{submission_id}/{galley_id}"
