@@ -38,6 +38,20 @@ or
 
 `docker compose run --rm export_issue`
 
+## export_all_issues.py
+
+export_all_issues.py exports all published articles from all issues of a journal in the format required for upload via the Janeway Import plugin's Import / Export / Update function documented at https://janeway-imports.readthedocs.io/en/latest/import_export_update.html. It also produces a CSV of accompanying images for articles in the format documented at https://janeway-imports.readthedocs.io/en/latest/article_images.html. 
+
+This batches issues into multiple CSV files because of the Janeway Import plugin's timeout settings for large imports. The default is batches of twenty issues. 
+
+### usage
+
+`python3 export_all_issues.py --base-url https://your-ojs.org --journal-path JOURNAL_PATH --api-key YOUR_API_KEY --journal-code YOUR_JANEWAY_JOURNAL_CODE --output-dir ./output_directory`
+
+or
+
+`docker compose run --rm export_all_issues`
+
 ## export_editors.py
 
 export_editors.py exports a list of editor users from OJS in the format required for upload via the Janeway Import plugin's Editors Import function documented at https://janeway-imports.readthedocs.io/en/latest/editor_import.html.
