@@ -69,7 +69,7 @@ def main():
                 )[:60] or f"submission {sub['id']}"
                 print(f"    [{i}/{len(submissions)}] {title_preview}...")
 
-                rows, doi, cover_image_url, html_only, html_url = submission_to_rows(
+                rows, doi, cover_image_url = submission_to_rows(
                     journal_url, args.base_url, args.api_key,
                     sub, issue, args.journal_code, args.locale, args.context_id,
                     section_cache,
@@ -81,9 +81,6 @@ def main():
                 all_rows.extend(rows)
                 if cover_image_url and doi:
                     image_rows.append({"Identifier Type": "doi", "Identifier": doi, "URL": cover_image_url})
-                if html_only:
-                    html_warnings.append({"title": title_preview, "html_url": html_url,
-                                          "issue": f"Vol. {issue.get('volume')} No. {issue.get('number')}"})
 
         articles_path = os.path.join(args.output_dir, f"janeway_articles_batch{batch_num:02d}.csv")
         write_article_csv(all_rows, articles_path)
@@ -98,12 +95,6 @@ def main():
 
     print(f"\nAll done. {total_batches} batch file(s) written to {args.output_dir}/")
     print("Upload each via Janeway > Manager > Plugins > Import Plugin > Article Import, Export, Update")
-
-    if html_warnings:
-        print(f"\nWarning: {len(html_warnings)} article(s) have HTML galleys only (no PDF) — manual galley upload required:")
-        for w in html_warnings:
-            print(f"  [{w['issue']}] {w['title']}")
-            print(f"    HTML: {w['html_url']}")
 
 if __name__ == "__main__":
     main()

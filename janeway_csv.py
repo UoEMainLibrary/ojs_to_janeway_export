@@ -186,8 +186,8 @@ def submission_to_rows(journal_url: str, site_base_url: str, api_key: str,
     pub = get_current_publication_fn(submission, api_key)
     if not pub:
         print(f"  Warning: no publication found for submission {submission['id']}", file=sys.stderr)
-        return [], "", "", False, ""
-        
+        return [], "", ""
+
     title = get_locale_value(pub.get("fullTitle") or pub.get("title"), locale)
     abstract = strip_html(get_locale_value(pub.get("abstract"), locale))
 
@@ -215,8 +215,11 @@ def submission_to_rows(journal_url: str, site_base_url: str, api_key: str,
 
     pdf_uri = get_pdf_url_fn(journal_url, pub)
     html_url = get_html_url_fn(journal_url, pub)
-    html_only = bool(html_url and not pdf_uri)
     cover_image_url = get_cover_image_url_fn(site_base_url, pub, context_id)
+
+    # If no PDF is available, fall back to the HTML galley URI so the galley
+    # is at least imported.
+    galley_uri = pdf_uri or html_url
 
     base = empty_article_row(journal_code, issue, locale) | {
         "Article title": title,
@@ -230,7 +233,7 @@ def submission_to_rows(journal_url: str, site_base_url: str, api_key: str,
         "Last page": last_page,
         "Page numbers (custom)": custom_pages,
         "Article section": section_title,
-        "PDF URI": pdf_uri,
+        "PDF URI": galley_uri,
     }
 
     authors = pub.get("authors") or []
@@ -259,7 +262,7 @@ def submission_to_rows(journal_url: str, site_base_url: str, api_key: str,
 
         rows.append(row)
 
-    return rows, doi, cover_image_url, html_only, html_url
+    return rows, doi, cover_image_url
 
 def write_article_csv(rows: list, path: str) -> None:
     with open(path, "w", newline="", encoding="utf-8-sig") as f:
