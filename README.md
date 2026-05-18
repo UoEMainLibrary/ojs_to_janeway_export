@@ -87,3 +87,7 @@ export_reviewers.py exports a list of reviewer users from OJS in the format requ
 or
 
 `docker compose run --rm export_reviewers`
+
+## caveats / to-dos
+
+- When there are no PDF galleys available, the export scripts instead use the HTML galleys. When these are imported into Janeway, the image src links point to the old OJS instance. This is fine as long as that instance remains up but for a full migration to Janeway, images would need to be migrated and these image links would need to be updated.
